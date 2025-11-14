@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import api from "../axiosConfig";
-import Header from "../components/Header";
 import "../styles/ActivitiesRegistration.css";
 
 export default function ActivitiesRegistrationPage({ admin = false }) {
@@ -137,10 +136,9 @@ export default function ActivitiesRegistrationPage({ admin = false }) {
   const studentRegistrations = registrations.filter(reg => reg.email === user?.email);
   const recentStudentRegistrations = studentRegistrations.slice(0, 5); // Show last 5
 
-  if (admin) {
+    if (admin) {
     return (
       <div className="admin-registration-container">
-        <Header />
         <h2>Activities Registration Management</h2>
         
         {/* Search Bar */}
@@ -228,7 +226,6 @@ export default function ActivitiesRegistrationPage({ admin = false }) {
   // Student Registration Form
   return (
     <div className="activities-registration-container">
-      <Header />
       <h2>Activities Registration</h2>
       <p className="subtitle">Register for school activities as an individual or team</p>
 

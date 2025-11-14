@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import DashboardSidebar from "./DashboardSidebar";
+import Header from "./Header";
 import StudentHome from "../pages/StudentHome";
 import AdminHome from "../pages/AdminHome";
 import ClubsPage from "../pages/ClubsPage";
@@ -57,17 +58,7 @@ export default function DashboardLayout() {
 
   return (
     <div className="dashboard-root">
-      <header className="topbar">
-        <div className="left-controls">
-          <button className="icon-btn" onClick={() => setSidebarVisible(v => !v)}>
-            <i className="fa fa-bars"></i>
-          </button>
-          <div className="brand">PTC Sports Events</div>
-        </div>
-        <div className="right-controls">
-          <span className="user-name">{user?.fullname}</span>
-        </div>
-      </header>
+      <Header onMenuClick={() => setSidebarVisible(v => !v)} />
 
       <div className="dashboard-body">
         {sidebarVisible && <DashboardSidebar user={user} role={user?.role} active={active} onChange={setActive} onLogout={handleLogout} />}

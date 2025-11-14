@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import Header from "../components/Header";
 
 export default function ClubRegistrationPage() {
   const [clubs, setClubs] = useState([]);
@@ -43,7 +42,6 @@ export default function ClubRegistrationPage() {
 
   return (
     <div className="club-registration-container">
-      <Header />
       <h4>Club Registration</h4>
       <div className="club-registration-form">
         <select value={clubId} onChange={e => setClubId(e.target.value)} className="form-control">

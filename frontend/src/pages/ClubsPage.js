@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import Header from "../components/Header";
 import ClubModal from "../components/ClubModal"; // correct relative path
 
 export default function ClubsPage({ admin = false }) {
@@ -77,7 +76,6 @@ export default function ClubsPage({ admin = false }) {
 
   return (
     <div className="clubs-page">
-      <Header />
       <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
         <h3>Clubs</h3>
         {admin && (

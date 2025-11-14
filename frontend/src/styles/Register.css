@@ -35,21 +35,25 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(21, 95, 21, 0.479); /* Dark green overlay */
+  background: rgba(21, 95, 21, 0.479);
   display: flex;
-  align-items: center;
-  justify-content: center; /* Centers the logo and title horizontally */
-  gap: 15px;
+  justify-content: flex-start; /* Content moved to left */
+  gap: 20px;                  /* space between logo and title */
+  padding-left: 30px;         /* add left spacing */
 }
 
 .header-logo {
   height: 100px;
   width: auto;
+  position: absolute;
+  left: 20%;
 }
 
 .header-title {
   margin: 0;
-  text-align: center;
+  position: absolute;
+  left: 30%;
+  text-align: left; /* Changed from center to left-align the title text beside the logo */
   font-family: "Courier New", Courier, monospace;
   font-size: 50px;
   letter-spacing: 2px;
@@ -65,7 +69,7 @@ body {
 
 /* Login container */
 .login-container {
-  max-width: 420px; 
+  max-width: 500px; /* Set to 500px to make the form a little bigger */
   width: 100%;
   margin: 30px auto 50px;
   background: #fff;

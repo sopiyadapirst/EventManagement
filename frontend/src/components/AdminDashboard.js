@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AdminDashboard.css';
@@ -35,7 +34,6 @@ function AdminDashboard() {
 
   return (
     <div className="dashboard">
-      <Header />
       <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <button onClick={toggleSidebar} className="sidebar-toggle">
           <i className="fas fa-bars"></i>

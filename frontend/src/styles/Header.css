@@ -1,0 +1,99 @@
+/* Header Section */
+.header-section {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+}
+
+/* Background Banner */
+.header-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Overlay Section */
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(21, 95, 21, 0.479); /* Dark green transparent overlay */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+/* === Menu Button Area === */
+.menubar-inside {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.header-menu {
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+.header-menu:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* === Logo Styling === */
+.header-logo {
+  height: 100px;
+  width: auto;
+}
+
+/* === Title Styling === */
+.header-title {
+  margin: 0;
+  text-align: center;
+
+  font-family: "Courier New", Courier, monospace;
+  font-size: 50px;
+  letter-spacing: 2px;
+  word-spacing: 2px;
+
+  color: #e2dada;
+  font-weight: 700;
+  font-style: italic;
+  font-variant: small-caps;
+  text-transform: capitalize;
+
+  text-shadow: 0 0 10px #FFFFFF;
+}
+
+/* === Responsive Design === */
+@media (max-width: 768px) {
+  .header-title {
+    font-size: 35px;
+  }
+
+  .header-logo {
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 28px;
+  }
+
+  .header-logo {
+    height: 65px;
+  }
+}
