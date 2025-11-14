@@ -1,0 +1,176 @@
+/* Login.css */
+
+/* Page Background */
+.login-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1b5e20, #81c784); /* Green gradient */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding-top: 50px;
+}
+
+/* Header Section */
+.header-section {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  height: 160px;
+  margin-bottom: 40px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.header-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.7);
+}
+
+.header-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.header-logo {
+  width: 70px;
+  height: 70px;
+  margin-bottom: 10px;
+}
+
+.header-title {
+  font-size: 22px;
+  font-weight: bold;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+}
+
+/* Login Container */
+.login-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+  padding: 50px 40px;
+  width: 400px;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+/* Tab Navigation */
+.tab-navigation {
+  display: flex;
+  width: 100%;
+  margin-bottom: 30px;
+  gap: 12px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+  background-color: #e8f5e9;
+  color: #1b5e20;
+}
+
+.tab-button.active {
+  background: linear-gradient(90deg, #43a047, #66bb6a);
+  color: white;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+}
+
+/* Form Section */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.input-group {
+  margin-bottom: 25px;
+  width: 100%;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #1b5e20;
+  font-size: 15px;
+}
+
+.input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-box input {
+  width: 100%;
+  padding: 14px 14px 14px 42px;
+  border-radius: 15px;
+  border: 1px solid #c8e6c9;
+  outline: none;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.input-box input:focus {
+  border-color: #43a047;
+  box-shadow: 0 0 10px rgba(67,160,71,0.4);
+}
+
+.icon {
+  position: absolute;
+  left: 12px;
+  color: #43a047;
+  font-size: 18px;
+}
+
+/* Buttons */
+.login-button, .register-button {
+  width: 100%;
+  font-weight: bold;
+  padding: 14px 0;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-top: 12px;
+  color: white;
+  background: linear-gradient(90deg, #43a047, #66bb6a);
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+}
+
+.login-button:hover, .register-button:hover {
+  background: linear-gradient(90deg, #2e7d32, #4caf50);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+}
+
+/* Register Text */
+.register-text {
+  text-align: center;
+  margin-top: 18px;
+  color: #1b5e20;
+  font-size: 14px;
+}

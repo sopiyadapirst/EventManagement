@@ -1,0 +1,64 @@
+/* Register.css - Unified with Login design (green theme) */
+
+/* Reset basics */
+* { box-sizing: border-box; }
+html, body { height: 100%; width: 100%; margin: 0; }
+
+.register-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1b5e20, #81c784); /* green gradient */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 40px 16px;
+}
+
+/* Container mirrors login */
+.register-container {
+  background: white;
+  border-radius: 20px;
+  width: 420px;
+  max-width: 96%;
+  padding: 36px 34px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1b5e20;
+  text-align: center;
+}
+
+.form-section { display: flex; flex-direction: column; gap: 14px; }
+
+.input-group label {
+  display:block; margin-bottom:6px; font-weight:600; color:#1b5e20;
+}
+
+.input-box { position: relative; }
+.input-box .icon { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#43a047; }
+
+.input-box input, .input-box select, .input-box textarea {
+  width:100%; padding:12px 14px 12px 42px; border-radius:12px; border:1px solid #c8e6c9; font-size:14px;
+}
+.input-box input:focus, .input-box select:focus, .input-box textarea:focus { outline:none; border-color:#43a047; box-shadow:0 0 10px rgba(67,160,71,0.2); }
+
+.primary-button {
+  width:100%; padding:12px 0; border-radius:14px; border:none; cursor:pointer; color:white; font-weight:700;
+  background: linear-gradient(90deg,#43a047,#66bb6a); box-shadow:0 6px 18px rgba(0,0,0,0.18);
+}
+.primary-button:hover { background: linear-gradient(90deg,#2e7d32,#4caf50); }
+
+.secondary-button { width:100%; padding:10px; border-radius:12px; border:2px solid #43a047; background:transparent; color:#1b5e20; font-weight:600; }
+
+.note-text { text-align:center; color:#1b5e20; font-size:14px; }
+
+@media (max-width:480px) {
+  .register-container { padding:20px; }
+  .header-title { font-size:18px; }
+}
