@@ -28,27 +28,26 @@ export default function RegistrationModule({ admin = false }) {
 
   // Club registration form state
   const [clubForm, setClubForm] = useState({
-    clubId: "",
+    club_option: "",
     name: "",
     email: "",
-    studentId: ""
+    student_id: ""
   });
 
   // Club registration submit handler
   const handleClubRegister = async (clubId) => {
     try {
-      await api.post("/club-registration", {
-        club_id: clubId,
+      const res = await api.post("/club-registration", {
+        club_option: clubForm.club_option,
         name: clubForm.name,
         email: clubForm.email,
-        studentId: clubForm.studentId,
-        user_id: user?.id
+        student_id: clubForm.student_id
       });
-      alert("Club registration submitted!");
-      setClubForm({ clubId: "", name: user?.fullname || "", email: user?.email || "", studentId: user?.schoolId || "" });
+      alert(res.data?.message || "Club registration submitted!");
+      setClubForm({ club_option: "", name: "", email: "", student_id: "" });
       await loadRegistrations();
     } catch (err) {
-      alert("Error registering for club");
+      alert(JSON.stringify(err.response?.data) || "Error registering for club");
     }
   };
 
@@ -76,12 +75,18 @@ export default function RegistrationModule({ admin = false }) {
     e.preventDefault();
     setActivityLoading(true);
     try {
-      await api.post("/activities-registration", activityForm);
-      alert("Registration submitted!");
+      const res = await api.post("/activities-registration", {
+        registration_type: activityForm.option,
+        name: activityForm.name,
+        email: activityForm.email,
+        school_id: activityForm.schoolId,
+        activity_option: activityForm.activity
+      });
+      alert(res.data?.message || "Registration submitted!");
       setActivityForm({ option: "Individual", name: "", email: "", schoolId: "", activity: "Basketball" });
       await loadRegistrations();
     } catch (err) {
-      alert("Error submitting registration");
+      alert(JSON.stringify(err.response?.data) || "Error submitting registration");
     } finally {
       setActivityLoading(false);
     }
@@ -120,13 +125,13 @@ export default function RegistrationModule({ admin = false }) {
             <h3>Club Registration</h3>
             <form onSubmit={e => {
               e.preventDefault();
-              handleClubRegister(clubForm.clubId);
+              handleClubRegister();
             }} className="club-registration-form">
-              <label>Select Club</label>
-              <select value={clubForm.clubId} onChange={e => setClubForm({ ...clubForm, clubId: e.target.value })} required>
+              <label>Club Option</label>
+              <select value={clubForm.club_option} onChange={e => setClubForm({ ...clubForm, club_option: e.target.value })} required>
                 <option value="">Select club</option>
                 {clubs.map(c => (
-                  <option key={c.id} value={c.id}>{c.name}</option>
+                  <option key={c.id} value={c.name}>{c.name}</option>
                 ))}
               </select>
               <label>Name</label>
@@ -134,7 +139,7 @@ export default function RegistrationModule({ admin = false }) {
               <label>Email</label>
               <input value={clubForm.email} onChange={e => setClubForm({ ...clubForm, email: e.target.value })} required />
               <label>Student ID</label>
-              <input value={clubForm.studentId} onChange={e => setClubForm({ ...clubForm, studentId: e.target.value })} required />
+              <input value={clubForm.student_id} onChange={e => setClubForm({ ...clubForm, student_id: e.target.value })} required />
               <button type="submit" className="btn btn-primary">Register</button>
             </form>
           </div>

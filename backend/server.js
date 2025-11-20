@@ -29,8 +29,8 @@ app.use("/uploads", express.static(path.join(__dirname, UPLOAD_DIR)));
 // Routes
 app.use("/api", authRoutes);
 app.use("/api/clubs", clubRoutes);
-app.use("/api/club-registrations", clubRegRoutes);
-app.use("/api/activity-registrations", activitiesRegRoutes);
+app.use("/api/club-registration", clubRegRoutes);
+app.use("/api/activities-registration", activitiesRegRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/announcements", announcementRoutes);
 app.use("/api/profile", profileRoutes);
@@ -41,30 +41,29 @@ const db = require("./db");
 app.get("/api/registrations", async (req, res) => {
 	try {
 		// Activities registrations
-		const [activities] = await db.query("SELECT id, name, email, schoolId, activity, option as type, date, status FROM activities_registration");
+		const [activities] = await db.query("SELECT id, registration_type, name, email, school_id, activity_option, status, created_at FROM activities_registration");
 		// Club registrations
-		const [clubs] = await db.query("SELECT id, name, email, schoolId, club_name, 'Club' as type, date, status FROM club_registration");
+		const [clubs] = await db.query("SELECT id, club_option, name, email, student_id, created_at FROM club_registration");
 		// Map activities
 		const activitiesMapped = activities.map(r => ({
 			id: r.id,
+			type: r.registration_type || "Activities",
 			name: r.name,
 			email: r.email,
-			schoolId: r.schoolId,
-			activity: r.activity,
-			type: r.type || "Activities",
-			date: r.date,
-			status: r.status || "Pending"
+			schoolId: r.school_id,
+			activity: r.activity_option,
+			status: r.status || "Pending",
+			date: r.created_at
 		}));
 		// Map clubs
 		const clubsMapped = clubs.map(r => ({
 			id: r.id,
+			type: "Club",
+			club_option: r.club_option,
 			name: r.name,
 			email: r.email,
-			schoolId: r.schoolId,
-			club_name: r.club_name,
-			type: r.type,
-			date: r.date,
-			status: r.status || "Pending"
+			studentId: r.student_id,
+			date: r.created_at
 		}));
 		// Merge and sort by date desc
 		const allRegs = [...activitiesMapped, ...clubsMapped].sort((a, b) => new Date(b.date) - new Date(a.date));

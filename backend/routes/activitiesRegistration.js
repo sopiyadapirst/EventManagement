@@ -5,24 +5,19 @@ const pool = require("../db");
 const { authenticateToken } = require("../middlewares/auth");
 
 // CREATE - Student Registration
+// New schema: id, name, email, schoolId, activity, option, date, status
+// Schema: id, registration_type, name, email, school_id, activity_option, status, created_at
 router.post("/", authenticateToken, async (req, res) => {
-  const { registration_type, name, email, school_id, activity_option, status } = req.body;
-  
-  // Validation
+  const { registration_type, name, email, school_id, activity_option } = req.body;
   if (!registration_type || !name || !email || !school_id || !activity_option) {
     return res.status(400).json({ error: "Missing required fields" });
   }
-
   try {
     const [result] = await pool.query(
-      "INSERT INTO activities_registration (registration_type, name, email, school_id, activity_option, status, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())",
-      [registration_type, name, email, school_id, activity_option, status || "Pending"]
+      "INSERT INTO activities_registration (registration_type, name, email, school_id, activity_option, status, created_at) VALUES (?, ?, ?, ?, ?, 'Pending', NOW())",
+      [registration_type, name, email, school_id, activity_option]
     );
-    
-    res.json({ 
-      message: "Activity registration saved",
-      id: result.insertId 
-    });
+    res.json({ message: "Activity registration saved", id: result.insertId });
   } catch (err) {
     console.error("Error creating registration:", err);
     res.status(500).json({ error: "Server error" });

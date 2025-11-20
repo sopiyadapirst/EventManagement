@@ -5,13 +5,17 @@ const pool = require("../db");
 const { authenticateToken } = require("../middlewares/auth");
 
 // Submit registration (students)
+// New schema: id, club_id, club_name, name, email, studentId, user_id, date, status
+// Schema: id, user_id, student_id, club_id, reason, created_at
 router.post("/", authenticateToken, async (req, res) => {
-  const userId = req.user.id;
-  const { club_id, student_id, reason } = req.body;
+  const { club_option, name, email, student_id } = req.body;
+  if (!club_option || !name || !email || !student_id) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
   try {
     await pool.query(
-      "INSERT INTO club_registration (user_id, student_id, club_id, reason, created_at) VALUES (?, ?, ?, ?, NOW())",
-      [userId, student_id || userId, club_id, reason || null]
+      "INSERT INTO club_registration (club_option, name, email, student_id, created_at) VALUES (?, ?, ?, ?, NOW())",
+      [club_option, name, email, student_id]
     );
     res.json({ message: "Club registration submitted" });
   } catch (err) {
