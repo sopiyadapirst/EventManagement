@@ -4,7 +4,7 @@ import Header from "./Header";
 import StudentHome from "../pages/StudentHome";
 import AdminHome from "../pages/AdminHome";
 import ClubsPage from "../pages/ClubsPage";
-import RegistrationModule from "../pages/RegistrationModule";
+import RegistrationPage from "../pages/RegistrationPage";
 import EventsPage from "../pages/EventsPage";
 import AnnouncementsPage from "../pages/AnnouncementsPage";
 import ProfilePage from "../pages/ProfilePage";
@@ -38,7 +38,7 @@ export default function DashboardLayout() {
       switch (active) {
         case "home": return <AdminHome />;
         case "club": return <ClubsPage admin />;
-        case "registration": return <RegistrationModule admin={true} />;
+        case "registration": return <RegistrationPage admin={true} />;
         case "event": return <EventsPage admin />;
         case "announcement": return <AnnouncementsPage admin />;
         case "profile": return <ProfilePage onProfileUpdate={handleProfileUpdate} />;
@@ -48,7 +48,7 @@ export default function DashboardLayout() {
       switch (active) {
         case "home": return <StudentHome />;
         case "club": return <ClubsPage />;
-        case "registration": return <RegistrationModule admin={false} />;
+        case "registration": return <RegistrationPage admin={false} />;
         case "event": return <EventsPage />;
         case "announcement": return <AnnouncementsPage />;
         case "profile": return <ProfilePage onProfileUpdate={handleProfileUpdate} />;

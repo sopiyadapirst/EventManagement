@@ -112,6 +112,61 @@
 .registration-admin-table tr:last-child td {
   border-bottom: none;
 }
+/* Admin dashboard styles */
+.admin-dashboard {
+  padding: 2rem;
+}
+.dashboard-controls {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.search-input {
+  flex: 2;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.sort-select {
+  flex: 1;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+.dashboard-table-wrapper {
+  overflow-x: auto;
+}
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.dashboard-table th, .dashboard-table td {
+  padding: 0.8rem;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+.dashboard-table th {
+  background: #f1f1f1;
+}
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  font-size: 1.1rem;
+}
+.approve-btn {
+  color: #28a745;
+}
+.reject-btn {
+  color: #dc3545;
+}
+.delete-btn {
+  color: #6c757d;
+}
 /* Club grid and card redesign */
 .club-grid {
   display: grid;
