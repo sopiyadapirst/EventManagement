@@ -45,7 +45,7 @@ function Register() {
 
   return (
     <div className="login-page">
-      <header className="header-section">
+      <header className="header">
         <img src="/uploads/ptc.jpg" alt="PTC Banner" className="header-banner" />
         <div className="header-overlay">
           <img src="/uploads/logo.png" alt="PTC Logo" className="header-logo" />

@@ -1,0 +1,138 @@
+/* ====== Sidebar ====== */
+.sidebar {
+  width: 240px;
+  background: #1e293b;
+  color: white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s ease;
+  overflow-y: auto;
+  position: fixed;
+  top: 180px; /* Below the fixed header */
+  left: 0;
+  height: calc(100vh - 180px); /* Full height minus header */
+  z-index: 20; /* higher than header */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border-bottom-right-radius: 12px;
+}
+
+/* Sidebar close button */
+.sidebar-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  z-index: 30;
+}
+
+/* Sidebar header - avatar above name and role */
+.sidebar-header {
+  display: flex;
+  flex-direction: column; /* vertical layout */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 14px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.avatar img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  border: 3px solid #3b82f6;
+}
+
+.avatar-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: white;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.user-info .name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.user-info .role {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+/* ====== Sidebar Nav ====== */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.nav-item {
+  background: transparent;
+  color: white;
+  border: none;
+  padding: 10px 12px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.nav-item i {
+  width: 20px;
+  text-align: center;
+}
+
+.nav-item.active,
+.nav-item:hover {
+  background: #0f172a;
+  transform: translateX(4px);
+}
+
+/* ====== Responsive Sidebar ====== */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -240px;
+    top: 180px;
+    height: calc(100vh - 180px);
+    z-index: 50;
+  }
+
+  .sidebar.open {
+    left: 0;
+  }
+}
+

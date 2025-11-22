@@ -1,25 +1,27 @@
-/* General resets and base styles */
+/* General body setup */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: auto;
   background: linear-gradient(0deg, #0a8e01 0%, #333701 100%);
-  color: #333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
 }
 
-/* Login page container */
+/* Page container */
 .login-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  padding-bottom: 40px;
 }
 
-/* Header Section */
-.header-section {
-  position: relative;
+/* Header section */
+.header {
   width: 100%;
-  height: 180px;
-  overflow: hidden;
+  height: 10%;
+  position: relative;
 }
 
 .header-banner {
@@ -31,54 +33,43 @@ body {
 
 .header-overlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(21, 95, 21, 0.479);
+  inset: 0;
+  background: rgba(21, 95, 21, 0.5);
   display: flex;
-  justify-content: flex-start; /* Content moved to left */
-  gap: 20px;                  /* space between logo and title */
-  padding-left: 30px;         /* add left spacing */
+  align-items: center;
+  padding-left: 30px;
 }
 
+/* Logo and Title */
 .header-logo {
-  height: 100px;
+  height: 90px;
   width: auto;
-  position: absolute;
-  left: 20%;
 }
 
 .header-title {
-  margin: 0;
-  position: absolute;
-  left: 30%;
-  text-align: left; /* Changed from center to left-align the title text beside the logo */
-  font-family: "Courier New", Courier, monospace;
-  font-size: 50px;
-  letter-spacing: 2px;
-  word-spacing: 2px;
+  margin-left: 20px;
+  font-size: 40px;
   color: #e2dada;
   font-weight: 700;
-  text-decoration: none;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px #ffffff;
   font-style: italic;
   font-variant: small-caps;
-  text-transform: capitalize;
-  text-shadow: 0 0 10px #FFFFFF;
+  white-space: nowrap;
 }
 
-/* Login container */
+/* Login container box */
 .login-container {
-  max-width: 500px; /* Set to 500px to make the form a little bigger */
+  max-width: 500px;
   width: 100%;
   margin: 30px auto 50px;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  background: #ffffff;
   padding: 30px 25px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
 }
 
-/* Tabs navigation */
+/* Tabs Navigation */
 .tab-navigation {
   display: flex;
   justify-content: center;
@@ -87,27 +78,24 @@ body {
 }
 
 .tab-button {
-  background: transparent;
+  background: none;
   border: none;
   padding: 12px 25px;
-  font-size: 1rem;
   cursor: pointer;
+  font-size: 1rem;
   color: #555;
   border-bottom: 3px solid transparent;
-  transition: color 0.3s, border-color 0.3s;
+  transition: 0.3s ease-in-out;
 }
 
+.tab-button.active,
 .tab-button:hover {
-  color: #228b22; /* Dark green */
-}
-
-.tab-button.active {
-  color: #228b22; /* Dark green */
-  border-bottom-color: #228b22; /* Dark green */
+  color: #228b22;
+  border-bottom-color: #228b22;
   font-weight: 600;
 }
 
-/* Form section */
+/* Form layout */
 .form-section {
   display: flex;
   flex-direction: column;
@@ -118,7 +106,7 @@ body {
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 8px; /* Adjusted for better alignment */
+  gap: 8px;
 }
 
 .input-group label {
@@ -127,19 +115,20 @@ body {
   color: #222;
 }
 
+/* Input with icon */
 .input-box {
   position: relative;
   display: flex;
   align-items: center;
   border: 1.8px solid #ccc;
-  border-radius: 5px;
+  border-radius: 6px;
   padding: 10px 10px 10px 40px;
   background: #fafafa;
-  transition: border-color 0.3s;
+  transition: border-color 0.3s, background 0.3s;
 }
 
 .input-box:focus-within {
-  border-color: #228b22; /* Dark green */
+  border-color: #228b22;
   background: #fff;
 }
 
@@ -147,10 +136,10 @@ body {
   position: absolute;
   left: 12px;
   font-size: 1.2rem;
-  color: #000000;
-  pointer-events: none;
+  color: #000;
 }
 
+/* Actual input fields */
 input[type="email"],
 input[type="password"] {
   width: 100%;
@@ -158,65 +147,55 @@ input[type="password"] {
   outline: none;
   font-size: 1rem;
   background: transparent;
-  color: #333;
-  padding: 0; /* Removed extra padding to fix alignment */
 }
 
 /* Login button */
 .login-button {
-  background-color: #228b22; /* Dark green */
+  background-color: #228b22;
   color: #fff;
-  font-weight: 700;
   border: none;
   padding: 12px;
   font-size: 1.1rem;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background-color 0.3s;
+  transition: 0.3s;
 }
 
 .login-button:hover {
-  background-color: #006400; /* Darker green */
+  background-color: #006400;
 }
 
-.login-button i {
-  font-size: 1.2rem;
-}
-
-/* Register text and button */
+/* Register text */
 .register-text {
-  font-size: 0.9rem;
   text-align: center;
   color: #666;
-  margin-top: 15px;
-  margin-bottom: 8px;
+  font-size: 0.9rem;
+  margin-top: 10px;
 }
 
+/* Register button */
 .register-button {
   background: transparent;
-  border: 2px solid #228b22; /* Dark green */
-  color: #228b22; /* Dark green */
-  font-weight: 600;
+  border: 2px solid #228b22;
+  color: #228b22;
   padding: 10px;
   font-size: 1rem;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  transition: background-color 0.3s, color 0.3s;
 }
 
 .register-button:hover {
-  background-color: #228b22; /* Dark green */
+  background-color: #228b22;
   color: #fff;
-}
-
-.register-button i {
-  font-size: 1.1rem;
 }

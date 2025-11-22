@@ -8,13 +8,14 @@ import RegistrationPage from "../pages/RegistrationPage";
 import EventsPage from "../pages/EventsPage";
 import AnnouncementsPage from "../pages/AnnouncementsPage";
 import ProfilePage from "../pages/ProfilePage";
-import "../styles/Dashboard.css";
+import "../styles/DashboardLayout.css";
+import "../styles/Sidebar.css";
 
 
 export default function DashboardLayout() {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem("user") || "null"));
   const [active, setActive] = useState("home");
-  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [sidebarVisible, setSidebarVisible] = useState(false);
 
   useEffect(() => {
     setActive("home");

@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Dashboard.css";
+import "../styles/DashboardSidebar.css";
 
 function DashboardSidebar({ user, role, active, onChange, onLogout, onClose }) {
   const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";

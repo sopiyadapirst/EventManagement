@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../axiosConfig";
+import "../styles/EventsPage.css";
 
 export default function EventsPage({ admin=false }) {
   const [events, setEvents] = useState([]);

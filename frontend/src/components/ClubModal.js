@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../axiosConfig";
+import "../styles/ClubModal.css";
 
 export default function ClubModal({ open, onClose, onSaved, initialData = null }) {
   const [name, setName] = useState("");

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../axiosConfig";
-import "../styles/RegistrationDashboard.css";
+import "../styles/RegistrationPage.css";
 
 export default function RegistrationPage({ admin }) {
   if (admin) {

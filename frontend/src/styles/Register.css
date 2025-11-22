@@ -11,8 +11,10 @@ body {
 .login-page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh; /* allows page to expand more than 1 screen */
+  overflow-y: auto;  /* enables scrolling */
 }
+
 
 /* Header Section */
 .header-section {
