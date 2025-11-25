@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../axiosConfig";
+import "../styles/ProfilePage.css";
 
 export default function ProfilePage({ onProfileUpdate }) {
   const [profile, setProfile] = useState(null);
@@ -72,40 +73,66 @@ export default function ProfilePage({ onProfileUpdate }) {
   if (!profile) return <div>Loading...</div>;
 
   return (
-    <div className="profile-page">
-      <h3>Profile</h3>
-
+  <div className="profile-full-center">
+    <div className="profile-card">
       <div className="profile-avatar">
-        <img
-          src={preview || "/uploads/default-avatar.png"}
-          alt="avatar"
-          style={{ width: 150, borderRadius: "50%" }}
-        />
+        {preview ? (
+          <img
+            src={preview}
+            alt="avatar"
+            style={{ width: 120, height: 120, borderRadius: "50%", objectFit: "cover" }}
+          />
+        ) : (
+          <i className="fa fa-user" />
+        )}
       </div>
 
-      <div className="profile-form">
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={form.fullname}
-          onChange={e => setForm({ ...form, fullname: e.target.value })}
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={e => setForm({ ...form, email: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Phone"
-          value={form.phone}
-          onChange={e => setForm({ ...form, phone: e.target.value })}
-        />
-        <input type="file" onChange={handleFileChange} />
+      <div className="profile-name">{form.fullname || "Name"}</div>
 
-        <button className="btn btn-primary" onClick={submit}>Save</button>
-      </div>
+      <form className="profile-form" onSubmit={e => { e.preventDefault(); submit(); }}>
+        <div>
+          <label className="profile-form-label"><i className="fa fa-user" /> Fullname</label>
+          <input
+            className="profile-form-input"
+            type="text"
+            placeholder="Full Name"
+            value={form.fullname}
+            onChange={e => setForm({ ...form, fullname: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <label className="profile-form-label"><i className="fa fa-envelope" /> Email</label>
+          <input
+            className="profile-form-input"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={e => setForm({ ...form, email: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <label className="profile-form-label"><i className="fa fa-phone" /> Number</label>
+          <input
+            className="profile-form-input"
+            type="text"
+            placeholder="Phone"
+            value={form.phone}
+            onChange={e => setForm({ ...form, phone: e.target.value })}
+          />
+        </div>
+
+        <div>
+          <label className="profile-form-label"><i className="fa fa-upload" /> Upload</label>
+          <div className="profile-form-upload">
+            <input type="file" onChange={handleFileChange} />
+          </div>
+        </div>
+
+        <button className="profile-save-btn" type="submit">Save Profile</button>
+      </form>
     </div>
-  );
+  </div>
+);
 }
