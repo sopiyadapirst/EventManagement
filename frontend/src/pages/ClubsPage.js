@@ -77,7 +77,19 @@ export default function ClubsPage({ admin = false }) {
   return (
     <div className="clubs-page">
       <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <h3>Clubs</h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {admin ? (
+            <>
+              <i className="fa fa-users-cog" style={{ fontSize: '1.5rem', color: '#2d3748' }}></i>
+              <h3 style={{ margin: 0 }}>Manage Clubs</h3>
+            </>
+          ) : (
+            <>
+              <i className="fa fa-users" style={{ fontSize: '1.5rem', color: '#2d3748' }}></i>
+              <h3 style={{ margin: 0 }}>Clubs</h3>
+            </>
+          )}
+        </div>
         {admin && (
           <button
             className="btn btn-primary"

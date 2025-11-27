@@ -33,25 +33,47 @@ export default function AnnouncementsPage({ admin=false }) {
     }
   };
 
+  if (!admin) {
+    // For students, show only the announcement list without management features
+    return (
+      <div className="announcements-page">
+        <div className="ann-header">
+          <div className="ann-header-left">
+            <i className="fa fa-bullhorn ann-header-icon" />
+            <span className="ann-header-title">Announcements</span>
+          </div>
+        </div>
+        <div className="announcement-list">
+          {ann.map(a => (
+            <div key={a.id} className="announcement-card">
+              <div className="announcement-card-header">
+                <i className="fa fa-bullhorn announcement-card-icon" />
+                <span className="announcement-title">{a.title}</span>
+              </div>
+              <div className="announcement-description">{a.message}</div>
+              <div className="announcement-meta">
+                <i className="fa fa-user" /> {a.posted_by || "Admin"} &nbsp;
+                <i className="fa fa-calendar" /> {new Date(a.created_at).toLocaleString()}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  // Admin view (full management)
   return (
     <div className="announcements-page">
-
-      {/* Header */}
       <div className="ann-header">
         <div className="ann-header-left">
           <i className="fa fa-bullhorn ann-header-icon" />
           <span className="ann-header-title">Manage Announcements</span>
         </div>
-
-        {admin && (
-          <button className="announcement-add-btn" onClick={() => setShowModal(true)}>
-            <i className="fa fa-plus" /> Add Announcement
-          </button>
-        )}
+        <button className="announcement-add-btn" onClick={() => setShowModal(true)}>
+          <i className="fa fa-plus" /> Add Announcement
+        </button>
       </div>
-
-      {/* MODAL */}
-      {admin && showModal && (
+      {showModal && (
         <div className="announcement-modal-overlay">
           <div className="announcement-modal">
             <div className="announcement-modal-header">
@@ -60,7 +82,6 @@ export default function AnnouncementsPage({ admin=false }) {
                 <i className="fa fa-times" />
               </button>
             </div>
-
             <form
               className="announcement-modal-form"
               onSubmit={e => { e.preventDefault(); post(); setShowModal(false); }}
@@ -74,7 +95,6 @@ export default function AnnouncementsPage({ admin=false }) {
                   placeholder="Announcement Title"
                 />
               </div>
-
               <div>
                 <label><i className="fa fa-align-left" /> Message</label>
                 <textarea
@@ -84,7 +104,6 @@ export default function AnnouncementsPage({ admin=false }) {
                   rows={3}
                 />
               </div>
-
               <div className="announcement-modal-actions">
                 <button className="announcement-modal-btn" type="submit">
                   <i className="fa fa-save" /> Post Announcement
@@ -94,30 +113,21 @@ export default function AnnouncementsPage({ admin=false }) {
           </div>
         </div>
       )}
-
-      {/* List */}
       <div className="announcement-list">
         {ann.map(a => (
           <div key={a.id} className="announcement-card">
-
             <div className="announcement-card-header">
               <i className="fa fa-bullhorn announcement-card-icon" />
               <span className="announcement-title">{a.title}</span>
             </div>
-
             <div className="announcement-description">{a.message}</div>
-
             <div className="announcement-meta">
               <i className="fa fa-user" /> {a.posted_by || "Admin"} &nbsp;
               <i className="fa fa-calendar" /> {new Date(a.created_at).toLocaleString()}
             </div>
-
-            {admin && (
-              <button className="announcement-delete-btn" onClick={() => remove(a.id)}>
-                <i className="fa fa-trash" /> Delete
-              </button>
-            )}
-
+            <button className="announcement-delete-btn" onClick={() => remove(a.id)}>
+              <i className="fa fa-trash" /> Delete
+            </button>
           </div>
         ))}
       </div>

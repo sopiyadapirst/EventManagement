@@ -50,6 +50,36 @@ export default function EventsPage({ admin = false }) {
     }
   };
 
+  if (!admin) {
+    // For students, show only the event list without management features
+    return (
+      <div className="events-page">
+        <div className="events-header">
+          <div className="events-header-left">
+            <i className="fa fa-calendar header-icon" />
+            <span className="events-title">Events</span>
+          </div>
+        </div>
+        <div className="event-list">
+          {events.map((ev) => (
+            <div key={ev.id} className="event-card">
+              <div className="event-card-header">
+                <i className="fa fa-calendar-day header-blue" />
+                <span className="event-title">{ev.title}</span>
+              </div>
+              <div className="event-description">{ev.description}</div>
+              <div className="event-details">
+                <i className="fa fa-calendar" /> {ev.event_date} &nbsp;
+                <i className="fa fa-clock" /> {ev.start_time} &nbsp;
+                <i className="fa fa-map-marker-alt" /> {ev.venue}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  // Admin view (full management)
   return (
     <div className="events-page">
       <div className="events-header">
@@ -57,18 +87,14 @@ export default function EventsPage({ admin = false }) {
           <i className="fa fa-calendar header-icon" />
           <span className="events-title">Manage Events</span>
         </div>
-
-        {admin && (
-          <button
-            className="event-open-modal-btn"
-            onClick={() => setShowModal(true)}
-          >
-            <i className="fa fa-plus icon-margin" /> Add Event
-          </button>
-        )}
+        <button
+          className="event-open-modal-btn"
+          onClick={() => setShowModal(true)}
+        >
+          <i className="fa fa-plus icon-margin" /> Add Event
+        </button>
       </div>
-
-      {admin && showModal && (
+      {showModal && (
         <div className="event-modal-overlay">
           <div className="event-modal">
             <div className="event-modal-header">
@@ -80,7 +106,6 @@ export default function EventsPage({ admin = false }) {
                 <i className="fa fa-times" />
               </button>
             </div>
-
             <form
               className="event-modal-form"
               onSubmit={(e) => {
@@ -102,7 +127,6 @@ export default function EventsPage({ admin = false }) {
                   placeholder="Event Title"
                 />
               </div>
-
               <div>
                 <label>
                   <i className="fa fa-calendar-day" /> Date
@@ -115,7 +139,6 @@ export default function EventsPage({ admin = false }) {
                   }
                 />
               </div>
-
               <div>
                 <label>
                   <i className="fa fa-clock" /> Time
@@ -128,7 +151,6 @@ export default function EventsPage({ admin = false }) {
                   }
                 />
               </div>
-
               <div className="event-modal-form-full">
                 <label>
                   <i className="fa fa-map-marker-alt" /> Venue
@@ -141,7 +163,6 @@ export default function EventsPage({ admin = false }) {
                   }
                 />
               </div>
-
               <div className="event-modal-form-full">
                 <label>
                   <i className="fa fa-align-left" /> Description
@@ -154,7 +175,6 @@ export default function EventsPage({ admin = false }) {
                   rows={3}
                 />
               </div>
-
               <div className="event-modal-actions event-modal-form-full">
                 <button className="event-modal-btn" type="submit">
                   <i className="fa fa-save icon-margin" /> Save Event
@@ -164,7 +184,6 @@ export default function EventsPage({ admin = false }) {
           </div>
         </div>
       )}
-
       <div className="event-list">
         {events.map((ev) => (
           <div key={ev.id} className="event-card">
@@ -172,23 +191,18 @@ export default function EventsPage({ admin = false }) {
               <i className="fa fa-calendar-day header-blue" />
               <span className="event-title">{ev.title}</span>
             </div>
-
             <div className="event-description">{ev.description}</div>
-
             <div className="event-details">
               <i className="fa fa-calendar" /> {ev.event_date} &nbsp;
               <i className="fa fa-clock" /> {ev.start_time} &nbsp;
               <i className="fa fa-map-marker-alt" /> {ev.venue}
             </div>
-
-            {admin && (
-              <button
-                className="event-delete-btn"
-                onClick={() => remove(ev.id)}
-              >
-                <i className="fa fa-trash icon-margin" /> Delete
-              </button>
-            )}
+            <button
+              className="event-delete-btn"
+              onClick={() => remove(ev.id)}
+            >
+              <i className="fa fa-trash icon-margin" /> Delete
+            </button>
           </div>
         ))}
       </div>

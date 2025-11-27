@@ -71,7 +71,8 @@ function StudentRegistrationDashboard() {
   const fetchRecentRegistrations = async () => {
     try {
       const response = await api.get("/registrations/recent");
-      setRecentRegistrations(response.data);
+      const sorted = (response.data || []).sort((a, b) => new Date(b.date) - new Date(a.date));
+      setRecentRegistrations(sorted);
     } catch (err) {
       console.error("Error fetching recent registrations:", err);
     }
@@ -82,11 +83,11 @@ function StudentRegistrationDashboard() {
     setClubMessage("");
     try {
       await api.post("/registrations/club", clubForm);
-      setClubMessage("Club registration submitted successfully!");
-      setClubForm({ ...clubForm, club_option: "" });
-      fetchRecentRegistrations();
+      window.alert("Club registration submitted successfully!");
+      setClubForm({ name: "", email: "", studentid: "", club_option: "" });
+      await fetchRecentRegistrations();
     } catch (err) {
-      setClubMessage(err.response?.data?.error || "Failed to submit registration");
+      window.alert(err.response?.data?.error || "Failed to submit registration");
     }
   };
 
@@ -95,18 +96,20 @@ function StudentRegistrationDashboard() {
     setActivityMessage("");
     try {
       await api.post("/registrations/activity", activityForm);
-      setActivityMessage("Activity registration submitted successfully!");
-      setActivityForm({ ...activityForm, activity_option: "", registration_type: "individual" });
-      fetchRecentRegistrations();
+      window.alert("Activity registration submitted successfully!");
+      setActivityForm({ name: "", email: "", studentid: "", registration_type: "individual", activity_option: "" });
+      await fetchRecentRegistrations();
     } catch (err) {
-      setActivityMessage(err.response?.data?.error || "Failed to submit registration");
+      window.alert(err.response?.data?.error || "Failed to submit registration");
     }
   };
 
   return (
     <div style={{ padding: "2rem" }}>
-      <h2 style={{ marginBottom: "2rem" }}>Registration Dashboard</h2>
-      
+      <div className="events-header-left">
+          <i class="fa-regular fa-address-card"></i>
+          <span className="events-title">Registration</span>
+        </div>
       {/* Split Screen Layout */}
       <div className="split-screen-dashboard">
         {/* Club Registration Panel */}
@@ -238,36 +241,39 @@ function StudentRegistrationDashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentRegistrations.map((reg) => (
-                <tr key={reg.id}>
-                  <td>{reg.type}</td>
-                  <td>{reg.name}</td>
-                  <td>
-                    <span
-                      style={{
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "4px",
-                        fontSize: "0.85rem",
-                        backgroundColor:
-                          reg.status === "Approved"
-                            ? "#d4edda"
-                            : reg.status === "Rejected"
-                            ? "#f8d7da"
-                            : "#fff3cd",
-                        color:
-                          reg.status === "Approved"
-                            ? "#155724"
-                            : reg.status === "Rejected"
-                            ? "#721c24"
-                            : "#856404",
-                      }}
-                    >
-                      {reg.status}
-                    </span>
-                  </td>
-                  <td>{new Date(reg.date).toLocaleDateString()}</td>
-                </tr>
-              ))}
+              {recentRegistrations
+                .filter(reg => reg.studentid === user?.studentid)
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .map(reg => (
+                  <tr key={reg.id}>
+                    <td>{reg.type}</td>
+                    <td>{reg.name}</td>
+                    <td>
+                      <span
+                        style={{
+                          padding: "0.25rem 0.5rem",
+                          borderRadius: "4px",
+                          fontSize: "0.85rem",
+                          backgroundColor:
+                            reg.status === "Approved"
+                              ? "#d4edda"
+                              : reg.status === "Rejected"
+                              ? "#f8d7da"
+                              : "#fff3cd",
+                          color:
+                            reg.status === "Approved"
+                              ? "#155724"
+                              : reg.status === "Rejected"
+                              ? "#721c24"
+                              : "#856404",
+                        }}
+                      >
+                        {reg.status}
+                      </span>
+                    </td>
+                    <td>{new Date(reg.date).toLocaleDateString()}</td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         )}
@@ -339,17 +345,25 @@ function AdminRegistrationDashboard() {
 
   return (
     <div className="admin-dashboard">
-      <h2 style={{ marginBottom: "2rem" }}>Registration Management</h2>
-
+      <div className="events-header-left">
+          <i class="fa-regular fa-address-card"></i>
+          <span className="events-title">Manage Registration</span>
+        </div>
       {/* Search and Sort Controls */}
-      <div className="dashboard-controls">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search by name or student ID..."
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-        />
+      <div className="dashboard-controls" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+        <div style={{ position: "relative" }}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by name or student ID..."
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            style={{ paddingLeft: "2rem" }}
+          />
+          <span style={{ position: "absolute", left: "8px", top: "50%", transform: "translateY(-50%)", color: "#888" }}>
+            <i className="fa fa-search"></i>
+          </span>
+        </div>
         <select
           className="sort-select"
           value={typeFilter}
