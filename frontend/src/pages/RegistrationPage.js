@@ -34,11 +34,8 @@ function StudentRegistrationDashboard() {
   const activityOptions = [
     "Basketball Game",
     "Volleyball Game",
-    "Football Game",
-    "Tennis Tournament",
     "Badminton Tournament",
     "Table Tennis",
-    "Swimming Competition",
     "Track and Field",
     "Chess Tournament",
     "E-Sports Competition",

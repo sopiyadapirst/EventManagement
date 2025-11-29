@@ -81,12 +81,12 @@ export default function ClubsPage({ admin = false }) {
           {admin ? (
             <>
               <i className="fa fa-users-cog" style={{ fontSize: '1.5rem', color: '#2d3748' }}></i>
-              <h3 style={{ margin: 0 }}>Manage Clubs</h3>
+              <h3 style={{ margin: 0 }}>Manage Sports Club</h3>
             </>
           ) : (
             <>
               <i className="fa fa-users" style={{ fontSize: '1.5rem', color: '#2d3748' }}></i>
-              <h3 style={{ margin: 0 }}>Clubs</h3>
+              <h3 style={{ margin: 0 }}>Sports Club</h3>
             </>
           )}
         </div>
