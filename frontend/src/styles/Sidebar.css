@@ -1,8 +1,8 @@
 /* ====== Sidebar ====== */
 .sidebar {
   width: 240px;
-  background: #1e293b;
-  color: white;
+  background: rgba(7, 97, 43, 0.5) !important;
+  color: rgb(26, 20, 20);
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -98,7 +98,7 @@
 
 .nav-item {
   background: transparent;
-  color: white;
+  color: rgb(20, 19, 19);
   border: none;
   padding: 10px 12px;
   text-align: left;
@@ -117,7 +117,7 @@
 
 .nav-item.active,
 .nav-item:hover {
-  background: #0f172a;
+  background: #2a2c33;
   transform: translateX(4px);
 }
 

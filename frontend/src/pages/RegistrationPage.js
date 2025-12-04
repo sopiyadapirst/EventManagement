@@ -24,21 +24,23 @@ function StudentRegistrationDashboard() {
     name: "",
     email: "",
     studentid: "",
-    registration_type: "individual",
+    registration_type: "",
     activity_option: "",
   });
   const [clubMessage, setClubMessage] = useState("");
   const [activityMessage, setActivityMessage] = useState("");
   const [recentRegistrations, setRecentRegistrations] = useState([]);
 
-  const activityOptions = [
-    "Basketball Game",
-    "Volleyball Game",
-    "Badminton Tournament",
-    "Table Tennis",
-    "Track and Field",
+  const individualActivities = [
     "Chess Tournament",
-    "E-Sports Competition",
+    "Table Tennis",
+    "Badminton",
+    "Athletics"
+  ];
+  const teamActivities = [
+    "Esport Tournament",
+    "Basketball Game",
+    "Volleyball Game"
   ];
 
   useEffect(() => {
@@ -102,16 +104,16 @@ function StudentRegistrationDashboard() {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="registration-page-container">
       <div className="events-header-left">
-          <i class="fa-regular fa-address-card"></i>
-          <span className="events-title">Registration</span>
-        </div>
+        <i className="fa-regular fa-address-card"></i>
+        <span className="events-title">Registration</span>
+      </div>
       {/* Split Screen Layout */}
       <div className="split-screen-dashboard">
         {/* Club Registration Panel */}
         <div className="split-panel club-panel">
-          <h3 style={{ marginBottom: "1.5rem", color: "#333" }}>Club Registration</h3>
+          <h3 className="panel-title">Club Registration</h3>
           <form className="register-form" onSubmit={handleClubSubmit}>
             <label>Name</label>
             <input
@@ -139,11 +141,9 @@ function StudentRegistrationDashboard() {
             
             <label>Select Club</label>
             {loadingClubs ? (
-              <div style={{ padding: "0.5rem", color: "#666" }}>Loading clubs...</div>
+              <div className="clubs-loading">Loading clubs...</div>
             ) : clubs.length === 0 ? (
-              <div style={{ padding: "0.5rem", color: "#dc3545" }}>
-                No clubs available. Please contact admin to add clubs.
-              </div>
+              <div className="clubs-empty">No clubs available. Please contact admin to add clubs.</div>
             ) : (
               <select
                 value={clubForm.club_option}
@@ -159,14 +159,14 @@ function StudentRegistrationDashboard() {
               </select>
             )}
             
-            <button type="submit">Register for Club</button>
+            <button type="submit" className="register-btn">Register for Club</button>
             {clubMessage && <div className="msg">{clubMessage}</div>}
           </form>
         </div>
 
         {/* Activities Registration Panel */}
         <div className="split-panel activity-panel">
-          <h3 style={{ marginBottom: "1.5rem", color: "#333" }}>Activities Registration</h3>
+          <h3 className="panel-title">Activities Registration</h3>
           <form className="register-form" onSubmit={handleActivitySubmit}>
             <label>Name</label>
             <input
@@ -209,14 +209,17 @@ function StudentRegistrationDashboard() {
               required
             >
               <option value="">Choose an activity...</option>
-              {activityOptions.map((activity, idx) => (
+              {(activityForm.registration_type === "individual"
+                ? individualActivities
+                : teamActivities
+              ).map((activity, idx) => (
                 <option key={idx} value={activity}>
                   {activity}
                 </option>
               ))}
             </select>
             
-            <button type="submit">Register for Activity</button>
+            <button type="submit" className="register-btn">Register for Activity</button>
             {activityMessage && <div className="msg">{activityMessage}</div>}
           </form>
         </div>
@@ -224,9 +227,9 @@ function StudentRegistrationDashboard() {
 
       {/* Recent Registrations */}
       <div className="recent-registrations-panel">
-        <h3 style={{ marginBottom: "1rem", marginTop: "2rem" }}>Recent Registrations</h3>
+        <h3 className="panel-title recent-title">Recent Registrations</h3>
         {recentRegistrations.length === 0 ? (
-          <p>No recent registrations</p>
+          <p className="registrations-empty">No recent registrations</p>
         ) : (
           <table className="dashboard-table">
             <thead>
@@ -246,27 +249,7 @@ function StudentRegistrationDashboard() {
                     <td>{reg.type}</td>
                     <td>{reg.name}</td>
                     <td>
-                      <span
-                        style={{
-                          padding: "0.25rem 0.5rem",
-                          borderRadius: "4px",
-                          fontSize: "0.85rem",
-                          backgroundColor:
-                            reg.status === "Approved"
-                              ? "#d4edda"
-                              : reg.status === "Rejected"
-                              ? "#f8d7da"
-                              : "#fff3cd",
-                          color:
-                            reg.status === "Approved"
-                              ? "#155724"
-                              : reg.status === "Rejected"
-                              ? "#721c24"
-                              : "#856404",
-                        }}
-                      >
-                        {reg.status}
-                      </span>
+                      <span className={`status-badge status-${reg.status?.toLowerCase()}`}>{reg.status}</span>
                     </td>
                     <td>{new Date(reg.date).toLocaleDateString()}</td>
                   </tr>
@@ -320,10 +303,11 @@ function AdminRegistrationDashboard() {
   const handleApprove = async (id, type) => {
     try {
       await api.put(`/registrations/${id}/approve`, { type });
+      window.alert("Registration approved successfully!");
       fetchRegistrations();
     } catch (err) {
       console.error("Error approving registration:", err);
-      alert(err.response?.data?.error || "Failed to approve registration");
+      window.alert(err.response?.data?.error || "Failed to approve registration");
     }
   };
 
@@ -333,33 +317,47 @@ function AdminRegistrationDashboard() {
     }
     try {
       await api.put(`/registrations/${id}/reject`, { type });
+      window.alert("Registration rejected.");
       fetchRegistrations();
     } catch (err) {
       console.error("Error rejecting registration:", err);
-      alert(err.response?.data?.error || "Failed to reject registration");
+      window.alert(err.response?.data?.error || "Failed to reject registration");
+    }
+  };
+
+  const handleDelete = async (id, type) => {
+    if (!window.confirm("Are you sure you want to delete this registration? This action cannot be undone.")) {
+      return;
+    }
+    try {
+      await api.delete(`/registrations/${id}?type=${type}`);
+      window.alert("Registration deleted.");
+      setRegistrations((prev) => prev.filter((reg) => reg.id !== id));
+    } catch (err) {
+      console.error("Error deleting registration:", err);
+      window.alert(err.response?.data?.error || "Failed to delete registration");
     }
   };
 
   return (
     <div className="admin-dashboard">
       <div className="events-header-left">
-          <i class="fa-regular fa-address-card"></i>
-          <span className="events-title">Manage Registration</span>
-        </div>
+        <i className="fa-regular fa-address-card"></i>
+        <span className="events-title">Manage Registration</span>
+      </div>
       {/* Search and Sort Controls */}
-      <div className="dashboard-controls" style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-        <div style={{ position: "relative" }}>
+      <div className="dashboard-controls">
+        <div className="search-input-wrapper">
+          <span className="search-icon">
+            <i className="fa fa-search"></i>
+          </span>
           <input
             type="text"
             className="search-input"
             placeholder="Search by name or student ID..."
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            style={{ paddingLeft: "2rem" }}
           />
-          <span style={{ position: "absolute", left: "8px", top: "50%", transform: "translateY(-50%)", color: "#888" }}>
-            <i className="fa fa-search"></i>
-          </span>
         </div>
         <select
           className="sort-select"
@@ -385,9 +383,9 @@ function AdminRegistrationDashboard() {
       {/* Registrations Table */}
       <div className="dashboard-table-wrapper">
         {loading ? (
-          <p>Loading...</p>
+          <p className="registrations-loading">Loading...</p>
         ) : registrations.length === 0 ? (
-          <p>No registrations found</p>
+          <p className="registrations-empty">No registrations found</p>
         ) : (
           <table className="dashboard-table">
             <thead>
@@ -410,47 +408,37 @@ function AdminRegistrationDashboard() {
                   <td>{reg.activity_club}</td>
                   <td>{new Date(reg.date).toLocaleDateString()}</td>
                   <td>
-                    <span
-                      style={{
-                        padding: "0.25rem 0.5rem",
-                        borderRadius: "4px",
-                        fontSize: "0.85rem",
-                        backgroundColor:
-                          reg.status === "Approved"
-                            ? "#d4edda"
-                            : reg.status === "Rejected"
-                            ? "#f8d7da"
-                            : "#fff3cd",
-                        color:
-                          reg.status === "Approved"
-                            ? "#155724"
-                            : reg.status === "Rejected"
-                            ? "#721c24"
-                            : "#856404",
-                      }}
-                    >
-                      {reg.status}
-                    </span>
+                    <span className={`status-badge status-${reg.status?.toLowerCase()}`}>{reg.status}</span>
                   </td>
                   <td>
+                    {/* Approve Button */}
                     {reg.status !== "Approved" && (
                       <button
                         className="action-btn approve-btn"
                         onClick={() => handleApprove(reg.id, reg.registration_type)}
                         title="Approve"
                       >
-                        <i className="fas fa-check"></i>
+                        <i className="fa fa-check"></i>
                       </button>
                     )}
+                    {/* Reject Button */}
                     {reg.status !== "Rejected" && (
                       <button
                         className="action-btn reject-btn"
                         onClick={() => handleReject(reg.id, reg.registration_type)}
                         title="Reject"
                       >
-                        <i className="fas fa-trash"></i>
+                        <i className="fa fa-times"></i>
                       </button>
                     )}
+                    {/* Delete Button */}
+                    <button
+                      className="action-btn delete-btn"
+                      onClick={() => handleDelete(reg.id, reg.registration_type)}
+                      title="Delete"
+                    >
+                      <i className="fa fa-trash"></i>
+                    </button>
                   </td>
                 </tr>
               ))}

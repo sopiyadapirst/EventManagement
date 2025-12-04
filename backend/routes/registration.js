@@ -52,37 +52,32 @@ router.get("/", authenticateToken, authorizeRole("admin"), async (req, res) => {
       activityParams.push(`%${search}%`, `%${search}%`);
     }
     
-    // Apply type filter
-    if (type && type !== 'all') {
-      if (type === 'Club') {
-        // Only get club registrations
-        const [clubs] = await pool.query(clubQuery, clubParams);
-        return res.json(clubs);
-      } else if (type === 'Activities') {
-        // Only get activities registrations
-        const [activities] = await pool.query(activityQuery, activityParams);
-        return res.json(activities);
-      }
-    }
-    
     // Apply status filter
     if (status && status !== 'all') {
       clubQuery += ` AND status = ?`;
       clubParams.push(status);
-      
       activityQuery += ` AND status = ?`;
       activityParams.push(status);
     }
-    
+
     // Get both types
     const [clubs] = await pool.query(clubQuery, clubParams);
     const [activities] = await pool.query(activityQuery, activityParams);
-    
-    // Combine and sort by date (newest first)
-    const allRegistrations = [...clubs, ...activities].sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
-    );
-    
+
+    let allRegistrations = [...clubs, ...activities];
+
+    // Apply type filter after fetching
+    if (type && type !== 'all') {
+      if (type === 'Club') {
+        allRegistrations = clubs;
+      } else if (type === 'Activities') {
+        allRegistrations = activities;
+      }
+    }
+
+    // Sort by date (newest first)
+    allRegistrations = allRegistrations.sort((a, b) => new Date(b.date) - new Date(a.date));
+
     res.json(allRegistrations);
   } catch (err) {
     console.error("Error fetching registrations:", err);
@@ -250,6 +245,26 @@ router.put("/:id/reject", authenticateToken, authorizeRole("admin"), async (req,
   } catch (err) {
     console.error("Error rejecting registration:", err);
     res.status(500).json({ error: "Failed to reject registration" });
+  }
+});
+
+// Admin: Delete registration
+router.delete("/:id", authenticateToken, authorizeRole("admin"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { type } = req.query; // 'Club' or 'Activities'
+    if (!type || !['Club', 'Activities'].includes(type)) {
+      return res.status(400).json({ error: "Invalid registration type" });
+    }
+    const table = type === 'Club' ? 'club_registration' : 'activities_registration';
+    const [result] = await pool.query(`DELETE FROM ${table} WHERE id = ?`, [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Registration not found" });
+    }
+    res.json({ message: "Registration deleted" });
+  } catch (err) {
+    console.error("Error deleting registration:", err);
+    res.status(500).json({ error: "Failed to delete registration" });
   }
 });
 

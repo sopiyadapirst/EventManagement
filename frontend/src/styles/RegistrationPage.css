@@ -1,3 +1,132 @@
+/* Container for Registration Page */
+.registration-page-container {
+  padding: 2rem;
+  background: #f4f6fb;
+  min-height: 100vh;
+}
+
+/* Panel Titles */
+.panel-title {
+  margin-bottom: 1.5rem;
+  color: #222;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.recent-title {
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+
+/* Clubs Loading/Empty States */
+.clubs-loading {
+  padding: 0.5rem;
+  color: #666;
+  font-size: 1rem;
+}
+.clubs-empty {
+  padding: 0.5rem;
+  color: #dc3545;
+  font-size: 1rem;
+}
+
+/* Button for Registration */
+.register-btn {
+  background: linear-gradient(90deg, #007bff 60%, #0056b3 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+  transition: background 0.2s;
+}
+.register-btn:hover {
+  background: linear-gradient(90deg, #0056b3 60%, #007bff 100%);
+}
+
+/* Recent Registrations Empty/Loading */
+.registrations-empty {
+  color: #dc3545;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+}
+.registrations-loading {
+  color: #666;
+  font-size: 1rem;
+  padding: 0.5rem 0;
+}
+
+/* Status Badge */
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+.status-approved {
+  background: #d4edda;
+  color: #155724;
+}
+.status-rejected {
+  background: #f8d7da;
+  color: #721c24;
+}
+.status-pending {
+  background: #fff3cd;
+  color: #856404;
+}
+
+
+.search-input-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 2;
+  max-width: 420px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1px solid #d1d5db;
+  padding: 0.15rem 1rem;
+  margin-right: 1.2rem;
+}
+
+.search-icon {
+  margin-right: 10px; 
+  font-size: 18px;    
+  color: #111010;       
+}
+
+.search-input {
+  flex: 1;            
+  height: 40px;
+  line-height: 28px;
+  padding: 0.5rem;    
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  background-color: #D9E8D8;
+  color: #0d0c22;
+}
+
+.search-input::placeholder {
+  color: #888;
+}
+
+.search-input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.25);
+}
+
+
+
+
+
 /* RegistrationPage Component Styles */
 .split-screen-dashboard {
   display: flex;
@@ -93,14 +222,6 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
 }
-
-.search-input {
-  flex: 2;
-  padding: 0.5rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
 .sort-select {
   flex: 1;
   padding: 0.5rem;
@@ -120,15 +241,40 @@
   font-size: 1.1rem;
 }
 
+
+.action-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  font-size: 1.25rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+.action-btn:focus {
+  box-shadow: 0 0 0 2px #007bff33;
+}
 .approve-btn {
   color: #28a745;
 }
-
+.approve-btn:hover {
+  background: #eafbe7;
+  color: #218838;
+}
 .reject-btn {
   color: #dc3545;
 }
-
+.reject-btn:hover {
+  background: #fdeaea;
+  color: #c82333;
+}
 .delete-btn {
-  color: #6c757d;
+  color: #0b0c0c;
+}
+.delete-btn:hover {
+  background: #f3f3f3;
+  color: #000000;
 }
 

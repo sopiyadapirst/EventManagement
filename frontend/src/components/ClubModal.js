@@ -56,8 +56,10 @@ export default function ClubModal({ open, onClose, onSaved, initialData = null }
 
       if (initialData && initialData.id) {
         await api.put(`/clubs/${initialData.id}`, fd);
+        window.alert("Club updated successfully!");
       } else {
         await api.post(`/clubs`, fd);
+        window.alert("Club added successfully!");
       }
 
       onSaved && onSaved();

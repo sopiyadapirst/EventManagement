@@ -24,7 +24,7 @@ export default function DashboardLayout() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   // Callback to update user after profile change

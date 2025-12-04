@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './StudentDashboard.css';
+import "../styles/StudentDashboard.css";
 
 function StudentDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

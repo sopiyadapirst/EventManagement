@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../axiosConfig";
-import ClubModal from "../components/ClubModal"; // correct relative path
+import ClubModal from "../components/ClubModal";
+import "../styles/ClubModal.css"; 
 
 export default function ClubsPage({ admin = false }) {
   const [clubs, setClubs] = useState([]);
@@ -11,7 +12,6 @@ export default function ClubsPage({ admin = false }) {
 
   const user = JSON.parse(localStorage.getItem("user") || "null");
 
-  // compute API root safely
   const apiRoot = (() => {
     const env = process.env.REACT_APP_API_URL;
     if (env) return env.replace(/\/api\/?$/i, "");
@@ -55,20 +55,6 @@ export default function ClubsPage({ admin = false }) {
     }
   };
 
-  const handleRegister = async (clubId) => {
-    if (!user) return alert("Please login to register for a club");
-    if (!window.confirm("Register for this club?")) return;
-    try {
-      await api.post("/club-registrations", { club_id: clubId });
-      alert("Club registration submitted");
-      fetchRegistrations();
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data?.error || "Error registering for club");
-    }
-  };
-
-  // Recent registrations for logged-in student
   const studentClubRegistrations = user
     ? registrations.filter(reg => reg.user_email === user.email || reg.user_id === user.id)
     : [];
@@ -76,51 +62,46 @@ export default function ClubsPage({ admin = false }) {
 
   return (
     <div className="clubs-page">
-      <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {admin ? (
-            <>
-              <i className="fa fa-users-cog" style={{ fontSize: '1.5rem', color: '#2d3748' }}></i>
-              <h3 style={{ margin: 0 }}>Manage Sports Club</h3>
-            </>
-          ) : (
-            <>
-              <i className="fa fa-users" style={{ fontSize: '1.5rem', color: '#2d3748' }}></i>
-              <h3 style={{ margin: 0 }}>Sports Club</h3>
-            </>
-          )}
+      {/* Header */}
+      <div className="clubs-header">
+        <div className="clubs-header-left">
+          <i className={`fa ${admin ? "fa-users-cog" : "fa-users"} clubs-header-icon`}></i>
+          <h3 className="clubs-header-title">{admin ? "Manage Sports Club" : "Sports Club"}</h3>
         </div>
         {admin && (
           <button
-            className="btn btn-primary"
+            className="btn btn-primary add-club-btn"
             onClick={() => { setEditingClub(null); setModalOpen(true); }}
           >
-            Add Club
+            <i className="fa fa-plus"></i> Add Club
           </button>
         )}
       </div>
 
+      {/* Club List */}
       {loading ? (
-        <div className="text-center" style={{ padding: 40 }}>Loading clubs...</div>
+        <div className="clubs-loading">Loading clubs...</div>
       ) : clubs.length === 0 ? (
-        <div className="text-center" style={{ padding: 40 }}>
-          <p style={{ fontSize: 18, color: '#475569' }}>No clubs available yet.</p>
+        <div className="clubs-empty">
+          <p className="clubs-empty-text">No clubs available yet.</p>
           {admin && (
-            <button className="btn btn-primary" onClick={() => setModalOpen(true)}>Add first club</button>
+            <button className="btn btn-primary" onClick={() => setModalOpen(true)}>
+              <i className="fa fa-plus"></i> Add first club
+            </button>
           )}
         </div>
       ) : (
         <div className="club-grid">
-          {clubs.map((c) => (
+          {clubs.map(c => (
             <div className="club-card" key={c.id}>
               <div className="club-image-wrap">
                 {c.picture ? (
                   <img
-                    src={(function(){
-                      if (/^https?:\/\//i.test(c.picture)) return c.picture;
-                      if (c.picture.startsWith("/")) return `${apiRoot}${c.picture}`;
-                      return `${apiRoot}/uploads/${c.picture}`;
-                    })()}
+                    src={/^https?:\/\//i.test(c.picture)
+                      ? c.picture
+                      : c.picture.startsWith("/")
+                        ? `${apiRoot}${c.picture}`
+                        : `${apiRoot}/uploads/${c.picture}`}
                     alt={c.name}
                     className="club-image"
                   />
@@ -137,26 +118,23 @@ export default function ClubsPage({ admin = false }) {
                   <p><strong>Members:</strong> {c.current_members ?? "-"}</p>
                   <p><strong>Schedule:</strong> {c.training_schedule || "-"}</p>
                 </div>
-                <div className="club-actions">
-                  {/* Registration button removed; use Registration page for club registration */}
-                  {admin && (
-                    <div className="admin-actions">
-                      <button className="btn btn-sm btn-warning" onClick={() => { setEditingClub(c); setModalOpen(true); }}>
-                        <i className="fa fa-edit"></i> Edit
-                      </button>
-                      <button className="btn btn-sm btn-danger" onClick={() => handleDelete(c.id)}>
-                        <i className="fa fa-trash"></i> Delete
-                      </button>
-                    </div>
-                  )}
-                </div>
+                {admin && (
+                  <div className="admin-actions">
+                    <button className="btn btn-sm btn-warning" onClick={() => { setEditingClub(c); setModalOpen(true); }}>
+                      <i className="fa fa-edit"></i> Edit
+                    </button>
+                    <button className="btn btn-sm btn-danger" onClick={() => handleDelete(c.id)}>
+                      <i className="fa fa-trash"></i> Delete
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Admin Add/Edit Modal */}
+      {/* Modal */}
       {admin && (
         <ClubModal
           open={modalOpen}
@@ -171,12 +149,12 @@ export default function ClubsPage({ admin = false }) {
         />
       )}
 
-      {/* Student's recent registrations */}
+      {/* Recent Registrations */}
       {recentClubRegistrations.length > 0 && !admin && (
-        <div className="recent-registrations-section" style={{ marginTop: 24 }}>
+        <div className="recent-registrations-section">
           <h4>Your Recent Club Registrations</h4>
           <div className="registrations-grid">
-            {recentClubRegistrations.map((reg) => (
+            {recentClubRegistrations.map(reg => (
               <div key={reg.id} className="registration-card">
                 <div className="card-header">
                   <h5>{reg.club_name || "Club"}</h5>
