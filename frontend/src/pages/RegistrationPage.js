@@ -29,6 +29,8 @@ function StudentRegistrationDashboard() {
   });
   const [clubMessage, setClubMessage] = useState("");
   const [activityMessage, setActivityMessage] = useState("");
+  const [clubError, setClubError] = useState("");
+  const [activityError, setActivityError] = useState("");
   const [recentRegistrations, setRecentRegistrations] = useState([]);
 
   const individualActivities = [
@@ -80,12 +82,43 @@ function StudentRegistrationDashboard() {
   const handleClubSubmit = async (e) => {
     e.preventDefault();
     setClubMessage("");
+    setClubError("");
+    // Validation
+    if (!clubForm.name.trim() || !clubForm.email.trim() || !clubForm.studentid.trim() || !clubForm.club_option.trim()) {
+      setClubError("");
+      setClubMessage("");
+      window.alert("All fields are required.");
+      return;
+    }
+    if (!/^([A-Za-z]+\s?)+$/.test(clubForm.name.trim())) {
+      setClubError("");
+      setClubMessage("");
+      window.alert("Invalid name format. Use letters and spaces only.");
+      return;
+    }
+    if (!clubForm.email.match(/^\S+@paterostechnologicalcollege\.edu\.ph$/)) {
+      setClubError("");
+      setClubMessage("");
+      window.alert("Invalid institutional email format.");
+      return;
+    }
+    if (!clubForm.studentid.match(/^[0-9]{2}[A-Z]{4}-[0-9]{4}$/)) {
+      setClubError("");
+      setClubMessage("");
+      window.alert("Invalid Student ID. Format: 23BSIT-0001");
+      return;
+    }
+    // Only validate input format and required fields. No strict user info match check.
     try {
       await api.post("/registrations/club", clubForm);
+      setClubMessage("");
+      setClubError("");
       window.alert("Club registration submitted successfully!");
       setClubForm({ name: "", email: "", studentid: "", club_option: "" });
       await fetchRecentRegistrations();
     } catch (err) {
+      setClubError("");
+      setClubMessage("");
       window.alert(err.response?.data?.error || "Failed to submit registration");
     }
   };
@@ -93,12 +126,43 @@ function StudentRegistrationDashboard() {
   const handleActivitySubmit = async (e) => {
     e.preventDefault();
     setActivityMessage("");
+    setActivityError("");
+    // Validation
+    if (!activityForm.name.trim() || !activityForm.email.trim() || !activityForm.studentid.trim() || !activityForm.registration_type.trim() || !activityForm.activity_option.trim()) {
+      setActivityError("");
+      setActivityMessage("");
+      window.alert("All fields are required.");
+      return;
+    }
+    if (!/^([A-Za-z]+\s?)+$/.test(activityForm.name.trim())) {
+      setActivityError("");
+      setActivityMessage("");
+      window.alert("Invalid name format. Use letters and spaces only.");
+      return;
+    }
+    if (!activityForm.email.match(/^\S+@paterostechnologicalcollege\.edu\.ph$/)) {
+      setActivityError("");
+      setActivityMessage("");
+      window.alert("Invalid institutional email format.");
+      return;
+    }
+    if (!activityForm.studentid.match(/^[0-9]{2}[A-Z]{4}-[0-9]{4}$/)) {
+      setActivityError("");
+      setActivityMessage("");
+      window.alert("Invalid Student ID. Format: 23BSIT-0001");
+      return;
+    }
+    // Only validate input format and required fields. No strict user info match check.
     try {
       await api.post("/registrations/activity", activityForm);
+      setActivityMessage("");
+      setActivityError("");
       window.alert("Activity registration submitted successfully!");
       setActivityForm({ name: "", email: "", studentid: "", registration_type: "individual", activity_option: "" });
       await fetchRecentRegistrations();
     } catch (err) {
+      setActivityError("");
+      setActivityMessage("");
       window.alert(err.response?.data?.error || "Failed to submit registration");
     }
   };
@@ -160,6 +224,7 @@ function StudentRegistrationDashboard() {
             )}
             
             <button type="submit" className="register-btn">Register for Club</button>
+            {clubError && <div className="error-msg">{clubError}</div>}
             {clubMessage && <div className="msg">{clubMessage}</div>}
           </form>
         </div>
@@ -220,6 +285,7 @@ function StudentRegistrationDashboard() {
             </select>
             
             <button type="submit" className="register-btn">Register for Activity</button>
+            {activityError && <div className="error-msg">{activityError}</div>}
             {activityMessage && <div className="msg">{activityMessage}</div>}
           </form>
         </div>

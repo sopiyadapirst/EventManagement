@@ -37,11 +37,7 @@
   padding-left: 30px;         /* add left spacing */
 }
 
-.header-logo {
-  width: 150px;
-  position: absolute;
-  left: 20%;
-}
+
 
 .header-title {
   margin: 0;

@@ -23,7 +23,7 @@ const upload = multer({ storage });
 // get profile
 router.get("/", authenticateToken, async (req, res) => {
   try {
-    const [rows] = await pool.query("SELECT id, fullname, email, phone, avatar, role FROM users WHERE id = ?", [req.user.id]);
+    const [rows] = await pool.query("SELECT id, fullname, email, studentid, avatar, role FROM users WHERE id = ?", [req.user.id]);
     if (!rows.length) return res.status(404).json({ error: "Not found" });
     const u = rows[0];
     u.avatar = u.avatar ? `/uploads/${u.avatar}` : null;
@@ -35,7 +35,7 @@ router.get("/", authenticateToken, async (req, res) => {
 
 // update profile (name, email optional)
 router.put("/", authenticateToken, upload.single("avatar"), async (req, res) => {
-  const { fullname, email, phone } = req.body;
+  const { fullname, email, studentid } = req.body;
   const avatar = req.file ? req.file.filename : null;
   try {
     // if email change check uniqueness
@@ -51,7 +51,7 @@ router.put("/", authenticateToken, upload.single("avatar"), async (req, res) => 
       if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
     }
 
-    await pool.query("UPDATE users SET fullname = COALESCE(?, fullname), email = COALESCE(?, email), phone = COALESCE(?, phone), avatar = COALESCE(?, avatar) WHERE id = ?", [fullname, email, phone, avatar, req.user.id]);
+    await pool.query("UPDATE users SET fullname = COALESCE(?, fullname), email = COALESCE(?, email), studentid = COALESCE(?, studentid), avatar = COALESCE(?, avatar) WHERE id = ?", [fullname, email, studentid, avatar, req.user.id]);
 
     res.json({ message: "Profile updated" });
   } catch (err) {

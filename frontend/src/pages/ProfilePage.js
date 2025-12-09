@@ -5,7 +5,7 @@ import "../styles/ProfilePage.css";
 export default function ProfilePage({ onProfileUpdate }) {
   const [profile, setProfile] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [form, setForm] = useState({ fullname: "", email: "", phone: "" });
+  const [form, setForm] = useState({ fullname: "", email: "", studentid: "" });
   const [preview, setPreview] = useState(null);
 
   const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:5000";
@@ -21,7 +21,7 @@ export default function ProfilePage({ onProfileUpdate }) {
         setForm({
           fullname: res.data.fullname || "",
           email: res.data.email || "",
-          phone: res.data.phone || ""
+          studentid: res.data.studentid || ""
         });
         setPreview(res.data.avatar ? `${apiUrl}${res.data.avatar}` : "/uploads/default-avatar.png");
       })
@@ -44,7 +44,7 @@ export default function ProfilePage({ onProfileUpdate }) {
       const fd = new FormData();
       fd.append("fullname", form.fullname);
       fd.append("email", form.email);
-      fd.append("phone", form.phone);
+      fd.append("studentid", form.studentid);
       if (avatarFile) fd.append("avatar", avatarFile);
 
       await api.put("/profile", fd, { headers: { "Content-Type": "multipart/form-data", user: JSON.stringify(user) } });
@@ -113,13 +113,13 @@ export default function ProfilePage({ onProfileUpdate }) {
         </div>
 
         <div>
-          <label className="profile-form-label"><i className="fa fa-phone" /> Number</label>
+          <label className="profile-form-label"><i className="fa fa-id-card" /> Student ID</label>
           <input
             className="profile-form-input"
             type="text"
-            placeholder="Phone"
-            value={form.phone}
-            onChange={e => setForm({ ...form, phone: e.target.value })}
+            placeholder="Student ID (e.g., 23BSIT-0001)"
+            value={form.studentid}
+            onChange={e => setForm({ ...form, studentid: e.target.value })}
           />
         </div>
 

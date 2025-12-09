@@ -43,6 +43,13 @@ export default function ClubModal({ open, onClose, onSaved, initialData = null }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Required field validation
+    if (!name.trim() || !description.trim() || !coach.trim() || !members || !schedule.trim()) {
+      window.alert("All required fields must be filled in."); // popup
+      return;
+    }
+
     setLoading(true);
     try {
       const fd = new FormData();
@@ -56,19 +63,16 @@ export default function ClubModal({ open, onClose, onSaved, initialData = null }
 
       if (initialData && initialData.id) {
         await api.put(`/clubs/${initialData.id}`, fd);
-        window.alert("Club updated successfully!");
+        window.alert("Club updated successfully!"); // popup
       } else {
         await api.post(`/clubs`, fd);
-        window.alert("Club added successfully!");
+        window.alert("Club added successfully!"); // popup
       }
 
       onSaved && onSaved();
       onClose && onClose();
     } catch (err) {
-      console.error(err);
-      // show detailed error when available to help debugging
-      const serverMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message || "Error saving club";
-      alert(serverMsg);
+      window.alert(err.response?.data?.error || "Failed to save club"); // popup
     } finally {
       setLoading(false);
     }
@@ -80,7 +84,9 @@ export default function ClubModal({ open, onClose, onSaved, initialData = null }
         <button className="modal-close-btn" onClick={onClose} type="button">
           <i className="fa fa-times"></i>
         </button>
-        <h3 style={{marginTop:0, marginBottom:16, textAlign:'left'}}>{initialData ? "Edit Club" : "Add Club"}</h3>
+        <h3 style={{marginTop:0, marginBottom:16, textAlign:'left'}}>
+          {initialData ? "Edit Club" : "Add Club"}
+        </h3>
         <form onSubmit={handleSubmit} className="modal-form">
           {initialData?.picture && !pictureFile && (
             <div style={{marginBottom:8}}>
@@ -96,7 +102,6 @@ export default function ClubModal({ open, onClose, onSaved, initialData = null }
 
           <label>Description</label>
           <textarea value={description} onChange={(e)=>setDescription(e.target.value)} rows={3} />
-
 
           <label>Achievements</label>
           <textarea value={achievements} onChange={(e)=>setAchievements(e.target.value)} rows={2} />
@@ -114,7 +119,9 @@ export default function ClubModal({ open, onClose, onSaved, initialData = null }
           <input type="file" accept="image/*" onChange={(e)=>setPictureFile(e.target.files?.[0] || null)} />
 
           <div style={{display:'flex', gap:8, marginTop:12}}>
-            <button type="submit" className="btn btn-primary" disabled={loading}>{loading ? 'Saving...' : 'Save'}</button>
+            <button type="submit" className="btn btn-primary" disabled={loading}>
+              {loading ? 'Saving...' : 'Save'}
+            </button>
             <button type="button" className="btn" onClick={() => onClose && onClose()}>Cancel</button>
           </div>
         </form>

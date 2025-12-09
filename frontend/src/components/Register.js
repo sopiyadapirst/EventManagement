@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "../axiosConfig";
@@ -6,7 +7,7 @@ import "../styles/Register.css";
 function Register() {
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [studentid, setStudentid] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
@@ -23,8 +24,8 @@ function Register() {
       return;
     }
 
-    if (!phone.match(/^[0-9]{11}$/)) {
-      alert("Please enter a valid 11-digit phone number.");
+    if (!studentid.match(/^[0-9]{2}[A-Z]{4}-[0-9]{4}$/)) {
+      alert("Please enter a valid Student ID (e.g., 23BSIT-0001).");
       return;
     }
 
@@ -32,7 +33,7 @@ function Register() {
       const res = await axios.post("/register", {
         fullname,
         email,
-        phone,
+        studentid,
         password,
       });
 
@@ -55,7 +56,7 @@ function Register() {
 
       <div className="login-container">
         <div className="tab-navigation">
-          <button className="tab-button" onClick={() => navigate("/login")}>
+          <button className="tab-button" onClick={() => navigate("/login")}> 
             LOGIN
           </button>
           <button className="tab-button active">REGISTER</button>
@@ -91,14 +92,14 @@ function Register() {
           </div>
 
           <div className="input-group">
-            <label>Phone Number</label>
+            <label>Student ID</label>
             <div className="input-box">
-              <i className="fa fa-phone icon"></i>
+              <i className="fa fa-id-card icon"></i>
               <input
                 type="text"
-                placeholder="Enter your 11-digit phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                placeholder="Enter your Student ID"
+                value={studentid}
+                onChange={(e) => setStudentid(e.target.value)}
                 required
               />
             </div>
@@ -123,7 +124,7 @@ function Register() {
           </button>
 
           <p className="register-text">Already have an account?</p>
-          <button className="register-button" onClick={() => navigate("/login")}>
+          <button className="register-button" onClick={() => navigate("/login")}> 
             <i className="fa fa-sign-in"></i> Login Here
           </button>
         </div>

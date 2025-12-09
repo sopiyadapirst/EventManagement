@@ -16,7 +16,7 @@ export default function Header({ onMenuClick }) {
           </button>
         </div>
 
-        <img src="/uploads/logo.png" alt="PTC Logo" className="header-logo" />
+        <img src="/uploads/logo.png" alt="PTC Logo" className="logo" />
         <h1 className="header-title">Pateros Technological College</h1>
       </div>
     </header>

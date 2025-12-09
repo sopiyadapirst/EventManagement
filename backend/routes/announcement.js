@@ -4,6 +4,20 @@ const router = express.Router();
 const pool = require("../db");
 const { authenticateToken, authorizeRole } = require("../middlewares/auth");
 
+// admin delete
+router.delete("/:id", authenticateToken, authorizeRole("admin"), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [result] = await pool.query("DELETE FROM announcements WHERE id = ?", [id]);
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Announcement not found" });
+    }
+    res.json({ message: "Announcement deleted" });
+  } catch (err) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // list
 router.get("/", async (req, res) => {
   try {

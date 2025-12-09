@@ -9,12 +9,16 @@ require("dotenv").config();
 
 // Register (students only)
 router.post("/register", async (req, res) => {
-  const { fullname, email, phone, password } = req.body;
-  if (!fullname || !email || !phone || !password) return res.status(400).json({ error: "Missing fields" });
+  const { fullname, email, studentid, password } = req.body;
+  if (!fullname || !email || !studentid || !password) return res.status(400).json({ error: "Missing fields" });
 
   // ensure institutional email
   if (!email.endsWith("@paterostechnologicalcollege.edu.ph")) {
     return res.status(400).json({ error: "Use institutional email" });
+  }
+
+  if (!studentid.match(/^[0-9]{2}[A-Z]{4}-[0-9]{4}$/)) {
+    return res.status(400).json({ error: "Invalid Student ID. Format: 23BSIT-0001" });
   }
 
   try {
@@ -23,8 +27,8 @@ router.post("/register", async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
     const [result] = await pool.query(
-      "INSERT INTO users (fullname, email, phone, password, role) VALUES (?, ?, ?, ?, ?)",
-      [fullname, email, phone, hashed, "student"]
+      "INSERT INTO users (fullname, email, studentid, password, role) VALUES (?, ?, ?, ?, ?)",
+      [fullname, email, studentid, hashed, "student"]
     );
 
     res.json({ message: "Registration successful. You can now log in.", userId: result.insertId });

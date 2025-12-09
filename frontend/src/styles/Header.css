@@ -56,9 +56,12 @@
 }
 
 /* === Logo Styling === */
-.header-logo {
-  height: 50px;
-  width: auto;
+.logo {
+  height: 60px;
+  width: 60px;
+  position: absolute;
+  left: 20%;
+  bottom: 2%;
 }
 
 /* === Title Styling === */
