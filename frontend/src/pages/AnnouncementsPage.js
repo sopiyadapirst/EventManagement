@@ -12,7 +12,9 @@ export default function AnnouncementsPage({ admin=false }) {
   }, []);
 
   const post = async () => {
-    if (!form.title || !form.message) return alert("Title and message required");
+    if (!form.title || !form.message) {
+      return alert("Both title and message are required.");
+    }
     try {
       await api.post("/announcements", form);
       setForm({ title: "", message: "" });
@@ -78,13 +80,24 @@ export default function AnnouncementsPage({ admin=false }) {
           <div className="announcement-modal">
             <div className="announcement-modal-header">
               <i className="fa fa-bullhorn" /> Add New Announcement
-              <button className="announcement-modal-close" onClick={() => setShowModal(false)}>
+              <button className="announcement-modal-close" onClick={() => {
+                setShowModal(false);
+                setForm({ title: "", message: "" });
+              }}>
                 <i className="fa fa-times" />
               </button>
             </div>
             <form
               className="announcement-modal-form"
-              onSubmit={e => { e.preventDefault(); post(); setShowModal(false); }}
+              onSubmit={async e => {
+                e.preventDefault();
+                if (!form.title || !form.message) {
+                  alert("Both title and message are required.");
+                  return;
+                }
+                await post();
+                setShowModal(false);
+              }}
             >
               <div>
                 <label><i className="fa fa-heading" /> Title</label>

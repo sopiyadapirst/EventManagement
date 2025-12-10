@@ -51,11 +51,12 @@ router.get("/:id", async (req, res) => {
 router.post("/", authenticateToken, authorizeRole("admin"), upload.single("picture"), async (req, res) => {
   const { name, description, achievements, coach, current_members, schedule } = req.body;
   const picture = req.file ? req.file.filename : null;
+  const created_by = req.user.id;
   try {
     console.log('Create club request body:', req.body, 'file:', req.file && req.file.filename);
     const [result] = await pool.query(
-      "INSERT INTO clubs (name, description, achievements, picture, coach, current_members, training_schedule) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [name, description || null, achievements || null, picture, coach || null, current_members || null, schedule || null]
+      "INSERT INTO clubs (name, description, achievements, picture, coach, current_members, training_schedule, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [name, description || null, achievements || null, picture, coach || null, current_members || null, schedule || null, created_by]
     );
     // return the created club
     const [rows] = await pool.query("SELECT * FROM clubs WHERE id = ?", [result.insertId]);

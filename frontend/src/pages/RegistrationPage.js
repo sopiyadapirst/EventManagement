@@ -19,6 +19,7 @@ function StudentRegistrationDashboard() {
     email: "",
     studentid: "",
     club_option: "",
+    club_id: "",
   });
   const [activityForm, setActivityForm] = useState({
     name: "",
@@ -84,7 +85,7 @@ function StudentRegistrationDashboard() {
     setClubMessage("");
     setClubError("");
     // Validation
-    if (!clubForm.name.trim() || !clubForm.email.trim() || !clubForm.studentid.trim() || !clubForm.club_option.trim()) {
+    if (!clubForm.name.trim() || !clubForm.email.trim() || !clubForm.studentid.trim() || !clubForm.club_option.trim() || !clubForm.club_id) {
       setClubError("");
       setClubMessage("");
       window.alert("All fields are required.");
@@ -114,7 +115,7 @@ function StudentRegistrationDashboard() {
       setClubMessage("");
       setClubError("");
       window.alert("Club registration submitted successfully!");
-      setClubForm({ name: "", email: "", studentid: "", club_option: "" });
+      setClubForm({ name: "", email: "", studentid: "", club_option: "", club_id: "" });
       await fetchRecentRegistrations();
     } catch (err) {
       setClubError("");
@@ -210,13 +211,20 @@ function StudentRegistrationDashboard() {
               <div className="clubs-empty">No clubs available. Please contact admin to add clubs.</div>
             ) : (
               <select
-                value={clubForm.club_option}
-                onChange={(e) => setClubForm({ ...clubForm, club_option: e.target.value })}
+                value={clubForm.club_id}
+                onChange={(e) => {
+                  const selectedClub = clubs.find(club => club.id.toString() === e.target.value);
+                  setClubForm({
+                    ...clubForm,
+                    club_id: e.target.value,
+                    club_option: selectedClub ? selectedClub.name : ""
+                  });
+                }}
                 required
               >
                 <option value="">Choose a club...</option>
                 {clubs.map((club) => (
-                  <option key={club.id} value={club.name}>
+                  <option key={club.id} value={club.id}>
                     {club.name}
                   </option>
                 ))}

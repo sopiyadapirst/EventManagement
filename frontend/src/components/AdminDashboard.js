@@ -81,7 +81,11 @@ const ClubManagement = () => {
     axios.get('http://localhost:5000/clubs').then(res => setClubs(res.data));
   };
   const addClub = () => {
-    axios.post('http://localhost:5000/clubs', { name, description }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+    axios.post('http://localhost:5000/clubs', {
+      name,
+      description,
+      // Add other fields if needed (achievements, coach, current_members, schedule)
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(() => { fetchClubs(); setName(''); setDescription(''); });
   };
   const deleteClub = (id) => {
@@ -139,7 +143,13 @@ const EventManagement = () => {
     axios.get('http://localhost:5000/events').then(res => setEvents(res.data));
   };
   const addEvent = () => {
-    axios.post('http://localhost:5000/events', { title, date, time, venue, description }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+    axios.post('http://localhost:5000/events', {
+      title,
+      event_date: date,
+      start_time: time,
+      venue,
+      description
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(() => { fetchEvents(); setTitle(''); setDate(''); setTime(''); setVenue(''); setDescription(''); });
   };
   const deleteEvent = (id) => {

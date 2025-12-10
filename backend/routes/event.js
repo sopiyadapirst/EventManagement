@@ -17,8 +17,12 @@ router.get("/", async (req, res) => {
 // admin add
 router.post("/", authenticateToken, authorizeRole("admin"), async (req, res) => {
   const { title, description, venue, event_date, start_time } = req.body;
+  const created_by = req.user.id;
   try {
-    const [result] = await pool.query("INSERT INTO events (title, description, venue, event_date, start_time) VALUES (?, ?, ?, ?, ?)", [title, description, venue, event_date, start_time]);
+    const [result] = await pool.query(
+      "INSERT INTO events (title, description, venue, event_date, start_time, created_by) VALUES (?, ?, ?, ?, ?, ?)",
+      [title, description, venue, event_date, start_time, created_by]
+    );
     res.json({ message: "Event added", id: result.insertId });
   } catch (err) {
     res.status(500).json({ error: "Server error" });

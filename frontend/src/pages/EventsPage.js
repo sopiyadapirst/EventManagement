@@ -17,12 +17,24 @@ export default function EventsPage({ admin = false }) {
   useEffect(() => {
     api
       .get("/events")
-      .then((r) => setEvents(r.data))
+      .then((r) => {
+        // Sort by created_at descending if available, else by event_date descending
+        const sorted = [...(r.data || [])].sort((a, b) => {
+          if (a.created_at && b.created_at) {
+            return new Date(b.created_at) - new Date(a.created_at);
+          }
+          // fallback: sort by event_date
+          return new Date(b.event_date) - new Date(a.event_date);
+        });
+        setEvents(sorted);
+      })
       .catch((e) => console.error(e));
   }, []);
 
   const addEvent = async () => {
-    if (!form.title) return alert("Title required");
+    if (!form.title || !form.event_date || !form.start_time || !form.venue || !form.description) {
+      return alert("All fields are required.");
+    }
     try {
       await api.post("/events", form);
       alert("Event added");
@@ -34,7 +46,14 @@ export default function EventsPage({ admin = false }) {
         start_time: "",
       });
       const r = await api.get("/events");
-      setEvents(r.data);
+      // Sort after adding
+      const sorted = [...(r.data || [])].sort((a, b) => {
+        if (a.created_at && b.created_at) {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }
+        return new Date(b.event_date) - new Date(a.event_date);
+      });
+      setEvents(sorted);
     } catch (err) {
       alert("Error");
     }
@@ -44,7 +63,16 @@ export default function EventsPage({ admin = false }) {
     if (!window.confirm("Delete event?")) return;
     try {
       await api.delete(`/events/${id}`);
-      setEvents((prev) => prev.filter((e) => e.id !== id));
+      setEvents((prev) => {
+        const filtered = prev.filter((e) => e.id !== id);
+        // Keep sorted after delete
+        return [...filtered].sort((a, b) => {
+          if (a.created_at && b.created_at) {
+            return new Date(b.created_at) - new Date(a.created_at);
+          }
+          return new Date(b.event_date) - new Date(a.event_date);
+        });
+      });
     } catch (err) {
       alert("Error");
     }
@@ -101,16 +129,30 @@ export default function EventsPage({ admin = false }) {
               <i className="fa fa-calendar" /> Add New Event
               <button
                 className="event-modal-close"
-                onClick={() => setShowModal(false)}
+                onClick={() => {
+                  setShowModal(false);
+                  setForm({
+                    title: "",
+                    description: "",
+                    venue: "",
+                    event_date: "",
+                    start_time: "",
+                  });
+                }}
               >
                 <i className="fa fa-times" />
               </button>
             </div>
             <form
               className="event-modal-form"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
-                addEvent();
+                const valid = form.title && form.event_date && form.start_time && form.venue && form.description;
+                if (!valid) {
+                  alert("All fields are required.");
+                  return;
+                }
+                await addEvent();
                 setShowModal(false);
               }}
             >

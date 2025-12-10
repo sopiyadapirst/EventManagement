@@ -89,7 +89,6 @@ router.get("/", authenticateToken, authorizeRole("admin"), async (req, res) => {
 router.get("/recent", authenticateToken, async (req, res) => {
   try {
     const userId = req.user.id;
-    
     // Get user's club registrations from club_registration table
     const [clubRegs] = await pool.query(
       `SELECT 
@@ -104,7 +103,6 @@ router.get("/recent", authenticateToken, async (req, res) => {
       LIMIT 10`,
       [userId]
     );
-    
     // Get user's activities registrations from activities_registration table
     const [activityRegs] = await pool.query(
       `SELECT 
@@ -119,12 +117,10 @@ router.get("/recent", authenticateToken, async (req, res) => {
       LIMIT 10`,
       [userId]
     );
-    
     // Combine and sort
     const recent = [...clubRegs, ...activityRegs].sort(
       (a, b) => new Date(b.date) - new Date(a.date)
     ).slice(0, 10);
-    
     res.json(recent);
   } catch (err) {
     console.error("Error fetching recent registrations:", err);
@@ -136,22 +132,19 @@ router.get("/recent", authenticateToken, async (req, res) => {
 // Database: club_registration (user_id, club_option, name, email, student_id, status)
 router.post("/club", authenticateToken, async (req, res) => {
   try {
-    const { name, email, studentid, club_option } = req.body;
+    const { name, email, studentid, club_id, club_option } = req.body;
     const userId = req.user.id;
-    
-    if (!name || !email || !studentid || !club_option) {
+    if (!name || !email || !studentid || !club_id || !club_option) {
       return res.status(400).json({ error: "Missing required fields" });
     }
-    
     const [result] = await pool.query(
-      `INSERT INTO club_registration (user_id, name, email, student_id, club_option, status) 
-       VALUES (?, ?, ?, ?, ?, 'Pending')`,
-      [userId, name, email, studentid, club_option]
+      `INSERT INTO club_registration (user_id, club_id, name, email, student_id, club_option, status)
+       VALUES (?, ?, ?, ?, ?, ?, 'Pending')`,
+      [userId, club_id, name, email, studentid, club_option]
     );
-    
-    res.json({ 
-      message: "Club registration submitted successfully", 
-      id: result.insertId 
+    res.json({
+      message: "Club registration submitted successfully",
+      id: result.insertId
     });
   } catch (err) {
     console.error("Error registering for club:", err);

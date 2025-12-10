@@ -94,8 +94,17 @@ const Registration = () => {
   useEffect(() => {
     axios.get('http://localhost:5000/clubs').then(res => setClubs(res.data));
   }, []);
-  const registerClub = (clubId) => {
-    axios.post('http://localhost:5000/register-club', { clubId }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+  const registerClub = (club) => {
+    // club: {id, name, ...}
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    if (!user) return alert('User not logged in');
+    axios.post('http://localhost:5000/registration/club', {
+      name: user.fullname,
+      email: user.email,
+      studentid: user.studentid,
+      club_id: club.id,
+      club_option: club.name
+    }, { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
       .then(() => alert('Club registered!'));
   };
   const registerActivity = () => {
@@ -107,7 +116,7 @@ const Registration = () => {
       <h2>Registration</h2>
       <h3>Club Registration</h3>
       {clubs.map(club => (
-        <button key={club.id} onClick={() => registerClub(club.id)}>Register for {club.name}</button>
+        <button key={club.id} onClick={() => registerClub(club)}>Register for {club.name}</button>
       ))}
       <h3>School Activities Registration</h3>
       <input type="text" placeholder="Activity Name" value={activityName} onChange={(e) => setActivityName(e.target.value)} />
